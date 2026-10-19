@@ -1,27 +1,27 @@
 # HireHub – Job Portal & Recruitment Management System
 
-HireHub is a full-stack web application designed to connect job seekers with recruiters. Job seekers can explore job opportunities and track their applications, while recruiters can post jobs and manage applications.
+HireHub is a full-stack web application that connects job seekers with recruiters. Job seekers can browse job opportunities, apply for positions, and track their application status. Recruiters can manage job postings and review applications submitted to their jobs.
 
 ## Features
 
 ### Job Seekers
-- User registration and login
-- Browse available job listings
-- View job details
-- Apply for jobs
-- Track application status
+- Register and log in to the platform.
+- Browse available job listings.
+- View job details.
+- Apply for jobs.
+- Track application status.
 
 ### Recruiters
-- Recruiter registration and approval workflow
-- Create, edit, and delete job postings
-- View applications for their job postings
-- Update application statuses
+- Register as a recruiter and follow the approval workflow.
+- Create, edit, and delete job postings.
+- View applications submitted to their job postings.
+- Update application statuses.
 
 ### Security
-- Role-based permissions
-- Protected application pages
-- Recruiter ownership checks for job management
-- Prevention of duplicate job applications
+- Role-based permissions.
+- Protected application pages.
+- Recruiter ownership checks for job management.
+- Prevention of duplicate applications for the same job.
 
 ## Technology Stack
 
@@ -41,8 +41,7 @@ HireHub is a full-stack web application designed to connect job seekers with rec
 - MySQL
 
 **Tools**
-- Git
-- GitHub
+- Git and GitHub
 - Visual Studio Code
 
 ## Project Structure
@@ -66,30 +65,46 @@ HireHub/
 ## Getting Started
 
 ### Prerequisites
+
+Install the following before running the project:
+
 - Python 3.12
 - Node.js and npm
 - MySQL Server
+- Git
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/salonishinde225/HireHub.git
 cd HireHub
 ```
 
-### 2. Set up the backend
+### 2. Set Up the MySQL Database
+
+Open MySQL Workbench and execute:
+
+```sql
+CREATE DATABASE hirehub;
+```
+
+If the database already exists, you can use the existing database instead.
+
+### 3. Set Up the Backend
+
+Open a terminal in the project root and run:
 
 ```powershell
 cd backend
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-pip install django djangorestframework mysqlclient python-dotenv
+pip install -r requirements.txt
 ```
 
-Create a `.env` file in the `backend/` directory and configure your local settings:
+Create a file named `.env` inside the `backend/` directory. Add your own local configuration:
 
 ```dotenv
-DJANGO_SECRET_KEY=your_secret_key
+DJANGO_SECRET_KEY=your_local_secret_key
 DB_NAME=hirehub
 DB_USER=your_mysql_username
 DB_PASSWORD=your_mysql_password
@@ -97,18 +112,27 @@ DB_HOST=localhost
 DB_PORT=3306
 ```
 
-Create the `hirehub` database in MySQL, then run:
+Replace the example values with your own configuration. Do not commit your actual `.env` file to GitHub.
+
+Apply database migrations:
 
 ```powershell
 python manage.py migrate
+```
+
+Start the Django development server:
+
+```powershell
 python manage.py runserver
 ```
 
-The backend will run at `http://127.0.0.1:8000/`.
+The backend will be available at:
 
-### 3. Set up the frontend
+http://127.0.0.1:8000/
 
-Open a second terminal:
+### 4. Set Up the Frontend
+
+Open a second terminal in the project root:
 
 ```powershell
 cd frontend
@@ -116,16 +140,22 @@ npm install
 npm run dev
 ```
 
-The frontend will run at the local URL displayed by Vite, typically `http://localhost:5173/`.
+Open the local URL displayed by Vite, typically:
+
+http://localhost:5173/
+
+Keep both development servers running while using the application.
 
 ## Future Improvements
-- Add automated tests for important workflows
-- Improve responsive design and accessibility
-- Deploy the frontend and backend
-- Add more recruiter and job seeker analytics
+
+- Add automated tests for important workflows.
+- Further improve responsive design and accessibility.
+- Deploy the frontend and backend.
+- Add more recruiter and job seeker analytics.
 
 ## Author
 
 **Saloni Shinde**
 
-GitHub: [salonishinde225](https://github.com/salonishinde225)
+- GitHub: https://github.com/salonishinde225
+- Project Repository: https://github.com/salonishinde225/HireHub

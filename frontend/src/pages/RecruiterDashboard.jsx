@@ -353,9 +353,10 @@ function RecruiterDashboard() {
   }
 
   return (
-    <div
-      style={{
-        maxWidth: '1200px',
+   <div
+  className="recruiter-dashboard"
+  style={{
+    maxWidth: '1200px',
         margin: '0 auto',
         padding: '32px 24px',
         color: '#1e293b',
@@ -774,109 +775,283 @@ function RecruiterDashboard() {
 
         <div style={{ display: 'grid', gap: '18px', marginTop: '20px' }}>
           {applications.map((application) => (
-            <article
-              key={application.id}
-              style={{
-                border: '1px solid #e2e8f0',
-                borderRadius: '12px',
-                padding: '22px',
-                backgroundColor: '#f8fafc',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: '12px',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <h3 style={{ margin: 0, color: '#0f172a' }}>
-                  {application.job_title}
-                </h3>
+            
+<article
+  key={application.id}
+  className="application-card"
+  style={{
+    border: '1px solid #e2e8f0',
+    borderRadius: '16px',
+    padding: '24px',
+    background: '#ffffff',
+    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+  }}
+>
+  {/* Application header */}
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      gap: '12px',
+      flexWrap: 'wrap',
+      paddingBottom: '18px',
+      borderBottom: '1px solid #e2e8f0',
+    }}
+  >
+    <div>
+      <p
+        style={{
+          color: '#64748b',
+          fontSize: '12px',
+          fontWeight: '700',
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+          margin: '0 0 6px',
+        }}
+      >
+        Job application
+      </p>
 
-                <span
-                  style={{
-                    backgroundColor:
-                      application.status === 'shortlisted'
-                        ? '#dcfce7'
-                        : application.status === 'rejected'
-                          ? '#fee2e2'
-                          : '#dbeafe',
-                    color:
-                      application.status === 'shortlisted'
-                        ? '#166534'
-                        : application.status === 'rejected'
-                          ? '#991b1b'
-                          : '#1d4ed8',
-                    padding: '6px 10px',
-                    borderRadius: '20px',
-                    fontSize: '12px',
-                    fontWeight: '700',
-                  }}
-                >
-                  {application.status.toUpperCase()}
-                </span>
-              </div>
+      <h3
+        style={{
+          margin: 0,
+          color: '#0f172a',
+          fontSize: '21px',
+          fontWeight: '750',
+        }}
+      >
+        {application.job_title}
+      </h3>
+    </div>
 
-              <p><strong>Company:</strong> {application.company}</p>
-              <p>
-                <strong>Applicant:</strong>{' '}
-                {application.applicant_username || application.applicant}
-              </p>
-              <p><strong>Application ID:</strong> {application.id}</p>
-              <p>
-                <strong>Applied on:</strong>{' '}
-                {application.applied_at
-                  ? new Date(application.applied_at).toLocaleDateString()
-                  : 'Not available'}
-              </p>
+    <span
+      style={{
+        backgroundColor:
+          application.status === 'shortlisted'
+            ? '#dcfce7'
+            : application.status === 'rejected'
+              ? '#fee2e2'
+              : application.status === 'reviewed'
+                ? '#dbeafe'
+                : '#f1f5f9',
+        color:
+          application.status === 'shortlisted'
+            ? '#166534'
+            : application.status === 'rejected'
+              ? '#991b1b'
+              : application.status === 'reviewed'
+                ? '#1d4ed8'
+                : '#475569',
+        padding: '7px 12px',
+        borderRadius: '999px',
+        fontSize: '12px',
+        fontWeight: '750',
+        letterSpacing: '0.4px',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {(application.status || 'pending').toUpperCase()}
+    </span>
+  </div>
 
-              <p>
-                <strong>Resume:</strong>{' '}
-                {application.resume ? (
-                  <a
-                    href={application.resume}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ color: '#2563eb', fontWeight: '600' }}
-                  >
-                    View Resume
-                  </a>
-                ) : (
-                  'Not provided'
-                )}
-              </p>
+  {/* Applicant information */}
+  <div
+    className="application-info-grid"
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+      gap: '14px',
+      margin: '20px 0',
+    }}
+  >
+    <div
+      style={{
+        padding: '14px',
+        background: '#f8fafc',
+        borderRadius: '10px',
+      }}
+    >
+      <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 6px' }}>
+        Applicant
+      </p>
+      <p style={{ color: '#0f172a', fontWeight: '700', margin: 0 }}>
+        {application.applicant_username || application.applicant || 'Applicant'}
+      </p>
+    </div>
 
-              <p style={{ marginBottom: '6px' }}>
-                <strong>Cover Letter</strong>
-              </p>
-              <p style={{ color: '#475569', lineHeight: 1.6 }}>
-                {application.cover_letter || 'No cover letter provided.'}
-              </p>
+    <div
+      style={{
+        padding: '14px',
+        background: '#f8fafc',
+        borderRadius: '10px',
+      }}
+    >
+      <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 6px' }}>
+        Application ID
+      </p>
+      <p style={{ color: '#0f172a', fontWeight: '700', margin: 0 }}>
+        #{application.id}
+      </p>
+    </div>
 
-              <label
-                htmlFor={`status-${application.id}`}
-                style={{ ...labelStyle, display: 'block', margin: '18px 0 10px' }}
-              >
-                Update Application Status
-              </label>
+    <div
+      style={{
+        padding: '14px',
+        background: '#f8fafc',
+        borderRadius: '10px',
+      }}
+    >
+      <p style={{ color: '#64748b', fontSize: '12px', margin: '0 0 6px' }}>
+        Applied on
+      </p>
+      <p style={{ color: '#0f172a', fontWeight: '700', margin: 0 }}>
+        {application.applied_at
+          ? new Date(application.applied_at).toLocaleDateString('en-IN')
+          : 'Not available'}
+      </p>
+    </div>
+  </div>
 
-              <select
-                id={`status-${application.id}`}
-                value={application.status}
-                onChange={(event) =>
-                  updateStatus(application.id, event.target.value)
-                }
-                style={{ ...inputStyle, maxWidth: '280px' }}
-              >
-                <option value="pending" disabled>Pending</option>
-                <option value="reviewed">Reviewed</option>
-                <option value="shortlisted">Shortlisted</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </article>
+  {/* Company and resume */}
+  <div style={{ marginBottom: '20px' }}>
+    <p style={{ margin: '0 0 12px', color: '#475569', fontSize: '14px' }}>
+      <strong style={{ color: '#334155' }}>Company:</strong>{' '}
+      {application.company || 'Not specified'}
+    </p>
+
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '12px',
+        flexWrap: 'wrap',
+        padding: '14px 16px',
+        background: '#eff6ff',
+        border: '1px solid #dbeafe',
+        borderRadius: '10px',
+      }}
+    >
+      <div>
+        <p style={{ margin: '0 0 4px', fontWeight: '700', color: '#1e3a8a' }}>
+          Applicant Resume
+        </p>
+        <p style={{ margin: 0, fontSize: '13px', color: '#475569' }}>
+          {application.resume
+            ? 'Open the submitted resume'
+            : 'No resume has been provided'}
+        </p>
+      </div>
+
+      {application.resume && (
+        <a
+          href={application.resume}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: '#1d4ed8',
+            fontWeight: '700',
+            fontSize: '14px',
+            textDecoration: 'none',
+          }}
+        >
+          View Resume ↗
+        </a>
+      )}
+    </div>
+  </div>
+
+  {/* Cover letter */}
+  <div
+    style={{
+      padding: '18px',
+      border: '1px solid #e2e8f0',
+      borderRadius: '12px',
+      background: '#fafbff',
+      marginBottom: '22px',
+    }}
+  >
+    <h4
+      style={{
+        margin: '0 0 10px',
+        color: '#0f172a',
+        fontSize: '15px',
+      }}
+    >
+      Cover Letter
+    </h4>
+
+    <p
+      style={{
+        color: '#475569',
+        lineHeight: 1.8,
+        fontSize: '14px',
+        whiteSpace: 'pre-wrap',
+        overflowWrap: 'anywhere',
+        margin: 0,
+      }}
+    >
+      {application.cover_letter || 'No cover letter provided.'}
+    </p>
+  </div>
+
+  {/* Status update */}
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'end',
+      justifyContent: 'space-between',
+      gap: '16px',
+      flexWrap: 'wrap',
+    }}
+  >
+    <div style={{ flex: '1 1 220px' }}>
+      <label
+        htmlFor={`status-${application.id}`}
+        style={{
+          display: 'block',
+          color: '#334155',
+          fontWeight: '700',
+          fontSize: '14px',
+          marginBottom: '8px',
+        }}
+      >
+        Update Application Status
+      </label>
+
+      <select
+        id={`status-${application.id}`}
+        value={application.status}
+        onChange={(event) =>
+          updateStatus(application.id, event.target.value)
+        }
+        style={{
+          width: '100%',
+          maxWidth: '300px',
+          padding: '12px',
+          border: '1px solid #cbd5e1',
+          borderRadius: '10px',
+          background: '#ffffff',
+          color: '#0f172a',
+          fontSize: '14px',
+        }}
+      >
+        <option value="pending" disabled>
+          Pending
+        </option>
+        <option value="reviewed">Reviewed</option>
+        <option value="shortlisted">Shortlisted</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+
+    <span style={{ fontSize: '12px', color: '#64748b' }}>
+      Application #{application.id}
+    </span>
+  </div>
+</article>
+
           ))}
         </div>
       </section>
