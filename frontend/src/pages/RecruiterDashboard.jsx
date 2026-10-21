@@ -1,10 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import API from '../services/api';
+import { useNavigate } from 'react-router-dom'
 
 function RecruiterDashboard() {
+    const navigate = useNavigate()
     const user = JSON.parse(
     localStorage.getItem('hirehub_user') || 'null'
   );
+
+  const handleLogout = () => {
+  localStorage.removeItem('hirehub_token')
+  localStorage.removeItem('hirehub_user')
+  navigate('/login', { replace: true })
+}
  const [formData, setFormData] = useState({
   title: '',
   company: '',
@@ -56,15 +64,27 @@ function RecruiterDashboard() {
       });
 
       setApplications(response.data);
-    } catch (error) {
+    } 
+    
+    catch (error) {
       console.error('Fetch applications error:', error.response?.data || error);
-      setApplicationsError(
-        error.response?.data?.error || 'Unable to load applications.'
-      );
+
+      if (error.response?.status === 401) {
+        setApplicationsError('Your session has expired. Please log in again.');
+      } else if (error.response?.status === 403) {
+        setApplicationsError(
+          'Your recruiter account may not be approved yet. Please contact the administrator.'
+        );
+      } else {
+        setApplicationsError('Unable to load applications. Please try again.');
+      }
     } finally {
       setApplicationsLoading(false);
     }
   }, []);
+
+    
+    
 
   const fetchMyJobs = useCallback(async () => {
     const token = localStorage.getItem('hirehub_token');
@@ -83,13 +103,23 @@ function RecruiterDashboard() {
       });
 
       setJobs(response.data);
+    
     } catch (error) {
       console.error('Fetch jobs error:', error.response?.data || error);
-      setJobsError('Unable to load your jobs.');
+
+      if (error.response?.status === 401) {
+        setJobsError('Your session has expired. Please log in again.');
+      } else if (error.response?.status === 403) {
+        setJobsError(
+          'Your recruiter account may not be approved yet. Please contact the administrator.'
+        );
+      } else {
+        setJobsError('Unable to load your jobs. Please try again.');
+      }
     } finally {
       setJobsLoading(false);
     }
-  }, []);
+}, []);
 
   useEffect(() => {
     fetchApplications();
@@ -380,16 +410,45 @@ function RecruiterDashboard() {
           Recruiter Workspace
         </p>
 
-        <h1
-          style={{
-            fontSize: '32px',
-            fontWeight: '800',
-            margin: '0 0 10px',
-            color: '#0f172a',
-          }}
-        >
-          Recruiter Dashboard
-        </h1>
+        
+<div
+  style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '16px',
+    flexWrap: 'wrap',
+    marginBottom: '10px',
+  }}
+>
+  <h1
+    style={{
+      fontSize: '32px',
+      fontWeight: '800',
+      margin: 0,
+      color: '#0f172a',
+    }}
+  >
+    Recruiter Dashboard
+  </h1>
+
+  <button
+    type="button"
+    onClick={handleLogout}
+    style={{
+      backgroundColor: '#fee2e2',
+      color: '#b91c1c',
+      border: '1px solid #fecaca',
+      padding: '10px 16px',
+      borderRadius: '8px',
+      fontWeight: '600',
+      cursor: 'pointer',
+    }}
+  >
+    Logout
+  </button>
+</div>
+
 
         <p style={{ color: '#64748b', margin: 0, lineHeight: 1.6 }}>
           Manage your job postings, track applicants, and grow your team.
@@ -634,6 +693,21 @@ function RecruiterDashboard() {
             </label>
 
              <label style={labelStyle}>
+              Location
+              <input
+                style={inputStyle}
+                value={editFormData.location}
+                onChange={(event) =>
+                  setEditFormData({ ...editFormData, location: event.target.value })
+                }
+                required
+              />
+            </label>
+
+
+
+
+             <label style={labelStyle}>
   Job Type
   <select
     style={inputStyle}
@@ -757,13 +831,17 @@ function RecruiterDashboard() {
           </button>
         </div>
 
-        {applicationsLoading && (
+        
+        {applicationsLoading && !applicationsError && (
           <p style={{ color: '#64748b' }}>Loading applications...</p>
         )}
 
         {applicationsError && (
-          <p role="alert" style={{ color: '#b91c1c' }}>{applicationsError}</p>
+          <p role="alert" style={{ color: '#b91c1c' }}>
+            {applicationsError}
+          </p>
         )}
+
 
         {!applicationsLoading &&
           !applicationsError &&

@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import API from '../services/api'
@@ -9,9 +8,9 @@ function ApplyJob() {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
-  resume: '',
-  cover_letter: '',
-})
+    resume: '',
+    cover_letter: '',
+  })
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -48,7 +47,7 @@ function ApplyJob() {
       setSuccess('Your application was submitted successfully!')
 
       setTimeout(() => {
-        navigate('/')
+        navigate('/my-applications')
       }, 1500)
     } catch (err) {
       const data = err.response?.data
@@ -65,49 +64,84 @@ function ApplyJob() {
   }
 
   return (
-    <div className="job-details-page">
-      <button onClick={() => navigate(`/jobs/${id}`)}>
+    <div className="job-details-page apply-job-page">
+      <button
+        type="button"
+        className="back-button"
+        onClick={() => navigate(`/jobs/${id}`)}
+      >
         ← Back to Job Details
       </button>
 
-      <div className="job-details-card">
-        <h1>Apply for Job</h1>
-        <p>Complete the form below to submit your application.</p>
+      <div className="job-details-card apply-job-card">
+        <div className="apply-job-heading">
+          <span className="apply-job-icon">✉</span>
+          <h1>Apply for Job</h1>
+          <p>
+            Take the next step in your career. Complete the form
+            below to submit your application.
+          </p>
+        </div>
 
-        {error && <p className="error-message">{error}</p>}
-        {success && <p>{success}</p>}
+        {error && (
+          <div className="error-message" role="alert">
+            {error}
+          </div>
+        )}
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="resume">Resume URL</label>
-          <input
-            id="resume"
-            type="url"
-            name="resume"
-            value={formData.resume}
-            onChange={handleChange}
-            placeholder="Paste your resume link"
-            required
-          />
+        {success && (
+          <div className="success-message" role="status">
+            {success}
+          </div>
+        )}
 
-          <label htmlFor="cover_letter">Cover Letter</label>
-          <textarea
-            id="cover_letter"
-            name="cover_letter"
-            value={formData.cover_letter}
-            onChange={handleChange}
-            placeholder="Tell the recruiter why you are suitable for this job"
-            rows="6"
-            required
-          />
+        <form className="apply-job-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="resume">Resume URL</label>
+            <input
+              id="resume"
+              type="url"
+              name="resume"
+              value={formData.resume}
+              onChange={handleChange}
+              placeholder="https://example.com/your-resume.pdf"
+              required
+            />
+            <small>
+              Paste a shareable link to your resume. Make sure the
+              recruiter has permission to open it.
+            </small>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="cover_letter">Cover Letter</label>
+            <textarea
+              id="cover_letter"
+              name="cover_letter"
+              value={formData.cover_letter}
+              onChange={handleChange}
+              placeholder="Introduce yourself and explain why you are suitable for this role..."
+              rows={7}
+              required
+            />
+            <small>
+              Briefly describe your skills, relevant projects, and
+              interest in the position.
+            </small>
+          </div>
 
           <button
             type="submit"
-            className="register-btn"
+            className="register-btn apply-submit-btn"
             disabled={loading}
           >
-            {loading ? 'Submitting...' : 'Submit Application'}
+            {loading ? 'Submitting...' : 'Submit Application →'}
           </button>
         </form>
+
+        <p className="apply-job-note">
+          Please review your details before submitting.
+        </p>
       </div>
     </div>
   )

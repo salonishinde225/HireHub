@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
+from django.utils import timezone
 
 from .models import Job, UserProfile, Application
 from .serializers import (
@@ -229,6 +230,13 @@ def apply_for_job(request, job_id):
         return Response(
             {"error": "Job not found or no longer active"},
             status=status.HTTP_404_NOT_FOUND
+        )
+        
+            # Prevent applications after the deadline
+    if job.deadline and timezone.localdate() > job.deadline:
+        return Response(
+            {"error": "The application deadline for this job has passed"},
+            status=status.HTTP_400_BAD_REQUEST
         )
 
     # Prevent duplicate applications

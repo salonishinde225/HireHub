@@ -28,10 +28,21 @@ function Login() {
     try {
       const response = await API.post('login/', formData)
 
-      localStorage.setItem('hirehub_token', response.data.token)
-      localStorage.setItem('hirehub_user', JSON.stringify(response.data.user))
+localStorage.setItem('hirehub_token', response.data.token)
+localStorage.setItem('hirehub_user', JSON.stringify(response.data.user))
 
-      navigate('/')
+const role = response.data.user.role
+
+if (role === 'recruiter') {
+  navigate('/recruiter-dashboard')
+} else if (role === 'job_seeker') {
+  navigate('/')
+} else {
+  setError('Your account role is not recognized. Please contact support.')
+  localStorage.removeItem('hirehub_token')
+  localStorage.removeItem('hirehub_user')
+}
+
     } catch (err) {
       setError(
         err.response?.data?.error ||
