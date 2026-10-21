@@ -1,48 +1,30 @@
-# HireHub – Job Portal & Recruitment Management System
+# HireHub — Job Portal & Recruitment Management System
 
-HireHub is a full-stack web application that connects job seekers with recruiters. Job seekers can browse job opportunities, apply for positions, and track their application status. Recruiters can manage job postings and review applications submitted to their jobs.
+HireHub is a web-based job portal that connects job seekers with recruiters. Job seekers can explore job opportunities, submit applications, and track their application status. Recruiters can manage job postings and review applications.
 
 ## Features
 
-### Job Seekers
-- Register and log in to the platform.
-- Browse available job listings.
-- View job details.
-- Apply for jobs.
-- Track application status.
+### Job Seeker
+- User registration and login
+- Browse available job listings
+- View job details, salary, required skills, and deadlines
+- Apply for jobs with a resume link and cover letter
+- Track application status
+- View application history
 
-### Recruiters
-- Register as a recruiter and follow the approval workflow.
-- Create, edit, and delete job postings.
-- View applications submitted to their job postings.
-- Update application statuses.
-
-### Security
-- Role-based permissions.
-- Protected application pages.
-- Recruiter ownership checks for job management.
-- Prevention of duplicate applications for the same job.
+### Recruiter
+- Recruiter dashboard with access restrictions
+- Create, edit, and delete job postings
+- View applications received for posted jobs
+- Review applicant resume links and cover letters
+- Update application statuses to Reviewed, Shortlisted, or Rejected
 
 ## Technology Stack
 
-**Frontend**
-- React
-- JavaScript
-- HTML5
-- CSS3
-- Vite
-
-**Backend**
-- Python
-- Django
-- Django REST Framework
-
-**Database**
-- MySQL
-
-**Tools**
-- Git and GitHub
-- Visual Studio Code
+- **Frontend:** React.js, JavaScript, CSS
+- **Backend:** Python, Django, Django REST Framework
+- **Database:** MySQL
+- **Development Tools:** VS Code, Git, GitHub
 
 ## Project Structure
 
@@ -50,15 +32,10 @@ HireHub is a full-stack web application that connects job seekers with recruiter
 HireHub/
 ├── backend/
 │   ├── config/
-│   ├── jobs/
-│   ├── manage.py
-│   └── requirements.txt
+│   └── jobs/
 ├── frontend/
-│   ├── public/
 │   ├── src/
-│   ├── package.json
-│   └── vite.config.js
-├── .gitignore
+│   └── package.json
 └── README.md
 ```
 
@@ -66,9 +43,9 @@ HireHub/
 
 ### Prerequisites
 
-Install the following before running the project:
+Install the following tools before running the project:
 
-- Python 3.12
+- Python
 - Node.js and npm
 - MySQL Server
 - Git
@@ -80,17 +57,7 @@ git clone https://github.com/salonishinde225/HireHub.git
 cd HireHub
 ```
 
-### 2. Set Up the MySQL Database
-
-Open MySQL Workbench and execute:
-
-```sql
-CREATE DATABASE hirehub;
-```
-
-If the database already exists, you can use the existing database instead.
-
-### 3. Set Up the Backend
+### 2. Set Up the Backend
 
 Open a terminal in the project root and run:
 
@@ -101,20 +68,9 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-Create a file named `.env` inside the `backend/` directory. Add your own local configuration:
+Configure your local environment variables and MySQL database according to the Django settings.
 
-```dotenv
-DJANGO_SECRET_KEY=your_local_secret_key
-DB_NAME=hirehub
-DB_USER=your_mysql_username
-DB_PASSWORD=your_mysql_password
-DB_HOST=localhost
-DB_PORT=3306
-```
-
-Replace the example values with your own configuration. Do not commit your actual `.env` file to GitHub.
-
-Apply database migrations:
+Run the database migrations:
 
 ```powershell
 python manage.py migrate
@@ -126,13 +82,11 @@ Start the Django development server:
 python manage.py runserver
 ```
 
-The backend will be available at:
+The backend will normally be available at `http://127.0.0.1:8000/`.
 
-http://127.0.0.1:8000/
+### 3. Set Up the Frontend
 
-### 4. Set Up the Frontend
-
-Open a second terminal in the project root:
+Open a **second terminal** in the project root and run:
 
 ```powershell
 cd frontend
@@ -140,22 +94,43 @@ npm install
 npm run dev
 ```
 
-Open the local URL displayed by Vite, typically:
+Open the local URL printed by Vite in the terminal, usually `http://localhost:5173/`.
 
-http://localhost:5173/
+## Testing
 
-Keep both development servers running while using the application.
+The project includes Django automated tests for important backend behaviours, including:
+
+- Job listing and detail endpoints
+- Job seeker permissions
+- Application deadline validation
+- Duplicate application prevention
+- Application status validation
+- Recruiter ownership permissions
+
+The existing automated test suite passed **8 tests** in the latest recorded test run.
+
+Run the tests from the backend directory:
+
+```powershell
+python manage.py test
+```
+
+## Security Notes
+
+- Keep `.env` files and credentials private.
+- Do not commit database passwords or Django secret keys to GitHub.
+- Configure appropriate production settings before deployment.
+- The Django development server is intended for local development, not production hosting.
 
 ## Future Improvements
 
-- Add automated tests for important workflows.
-- Further improve responsive design and accessibility.
-- Deploy the frontend and backend.
-- Add more recruiter and job seeker analytics.
+- Deploy the frontend and backend
+- Add screenshots and a live demo
+- Improve automated test coverage
+- Add further validation and error handling where needed
 
 ## Author
 
 **Saloni Shinde**
 
-- GitHub: https://github.com/salonishinde225
-- Project Repository: https://github.com/salonishinde225/HireHub
+GitHub: [salonishinde225](https://github.com/salonishinde225)
