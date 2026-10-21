@@ -122,7 +122,23 @@ python manage.py test
 - Configure appropriate production settings before deployment.
 - The Django development server is intended for local development, not production hosting.
 
+## Screenshots
+
+### Home Page
+![Home Page](Screenshots/home.png)
+
+### Job Details
+![Job Details](Screenshots/job-details.png)
+
+### My Applications
+![My Applications](Screenshots/my-applications.png)
+
+### Recruiter Dashboard
+![Recruiter Dashboard](Screenshots/recruiter-dashboard.png)
+
+
 ## Future Improvements
+
 
 - Deploy the frontend and backend
 - Add screenshots and a live demo
