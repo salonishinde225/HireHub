@@ -8,10 +8,10 @@ function RecruiterDashboard() {
     localStorage.getItem('hirehub_user') || 'null'
   );
 
-  const handleLogout = () => {
+ const handleLogout = () => {
   localStorage.removeItem('hirehub_token')
   localStorage.removeItem('hirehub_user')
-  navigate('/login', { replace: true })
+  navigate('/', { replace: true })
 }
  const [formData, setFormData] = useState({
   title: '',
@@ -431,22 +431,40 @@ function RecruiterDashboard() {
   >
     Recruiter Dashboard
   </h1>
+  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+    <button
+      type="button"
+      onClick={() => navigate('/')}
+      style={{
+        backgroundColor: '#eff6ff',
+        color: '#1d4ed8',
+        border: '1px solid #bfdbfe',
+        padding: '10px 16px',
+        borderRadius: '8px',
+        fontWeight: '600',
+        cursor: 'pointer',
+      }}
+    >
+      Home
+    </button>
 
-  <button
-    type="button"
-    onClick={handleLogout}
-    style={{
-      backgroundColor: '#fee2e2',
-      color: '#b91c1c',
-      border: '1px solid #fecaca',
-      padding: '10px 16px',
-      borderRadius: '8px',
-      fontWeight: '600',
-      cursor: 'pointer',
-    }}
-  >
-    Logout
-  </button>
+    <button
+      type="button"
+      onClick={handleLogout}
+      style={{
+        backgroundColor: '#fee2e2',
+        color: '#b91c1c',
+        border: '1px solid #fecaca',
+        padding: '10px 16px',
+        borderRadius: '8px',
+        fontWeight: '600',
+        cursor: 'pointer',
+      }}
+    >
+      Logout
+    </button>
+  </div>
+
 </div>
 
 
