@@ -304,7 +304,7 @@ function RecruiterDashboard() {
 
   const cardStyle = {
     backgroundColor: '#ffffff',
-    padding: '28px',
+    padding: '32px',
     borderRadius: '16px',
     boxShadow: '0 4px 20px rgba(15, 23, 42, 0.06)',
     border: '1px solid #e2e8f0',
@@ -313,6 +313,7 @@ function RecruiterDashboard() {
 
   const sectionHeadingStyle = {
     fontSize: '22px',
+    fontWeight: '700',
     color: '#0f172a',
     marginTop: 0,
     marginBottom: '22px',
@@ -325,7 +326,7 @@ function RecruiterDashboard() {
     borderRadius: '8px',
     fontSize: '14px',
     boxSizing: 'border-box',
-    backgroundColor: '#fff',
+    backgroundColor: '#f8fafc',
     color: '#1e293b',
   };
 
@@ -333,7 +334,7 @@ function RecruiterDashboard() {
     fontSize: '14px',
     fontWeight: '600',
     color: '#334155',
-    marginBottom: '-8px',
+   marginBottom: '4px',
   };
 
   const primaryButtonStyle = {
@@ -341,7 +342,7 @@ function RecruiterDashboard() {
     color: '#fff',
     border: 'none',
     padding: '12px 18px',
-    borderRadius: '8px',
+    borderRadius: '10px',
     fontWeight: '600',
     cursor: 'pointer',
   };
@@ -369,7 +370,7 @@ function RecruiterDashboard() {
   const formGridStyle = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-    gap: '16px',
+    gap: '20px',
     alignItems: 'start',
   };
 
@@ -413,25 +414,35 @@ function RecruiterDashboard() {
         
 <div
   style={{
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateColumns: '1fr auto 1fr',
     alignItems: 'center',
     gap: '16px',
-    flexWrap: 'wrap',
-    marginBottom: '10px',
+    marginBottom: '14px',
   }}
 >
+  <div />
+
   <h1
     style={{
       fontSize: '32px',
       fontWeight: '800',
       margin: 0,
       color: '#0f172a',
+      textAlign: 'center',
     }}
   >
     Recruiter Dashboard
   </h1>
-  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'flex-end',
+      gap: '10px',
+      flexWrap: 'wrap',
+    }}
+  >
     <button
       type="button"
       onClick={() => navigate('/')}
@@ -464,11 +475,8 @@ function RecruiterDashboard() {
       Logout
     </button>
   </div>
-
 </div>
-
-
-        <p style={{ color: '#64748b', margin: 0, lineHeight: 1.6 }}>
+ <p style={{ color: '#64748b', margin: 0, lineHeight: 1.6 }}>
           Manage your job postings, track applicants, and grow your team.
         </p>
       </div>
@@ -614,13 +622,16 @@ function RecruiterDashboard() {
           <h2 style={sectionHeadingStyle}>My Jobs</h2>
 
           <button
-            type="button"
-            onClick={fetchMyJobs}
-            disabled={jobsLoading}
-            style={secondaryButtonStyle}
-          >
-            {jobsLoading ? 'Loading...' : 'Refresh My Jobs'}
-          </button>
+  type="button"
+  onClick={fetchMyJobs}
+  disabled={jobsLoading}
+  style={{
+    ...secondaryButtonStyle,
+    marginBottom: '20px',
+  }}
+>
+  {jobsLoading ? 'Loading...' : 'Refresh My Jobs'}
+</button>
         </div>
 
         {jobsError && <p role="alert" style={{ color: '#b91c1c' }}>{jobsError}</p>}
@@ -637,30 +648,58 @@ function RecruiterDashboard() {
           }}
         >
           {jobs.map((job) => (
-            <article
-              key={job.id}
-              style={{
-                border: '1px solid #e2e8f0',
-                borderRadius: '12px',
-                padding: '20px',
-                backgroundColor: '#f8fafc',
-              }}
-            >
-              <h3 style={{ marginTop: 0, color: '#0f172a', fontSize: '19px' }}>
-                {job.title}
-              </h3>
+          <article
+  key={job.id}
+  style={{
+    border: '1px solid #e2e8f0',
+    borderRadius: '16px',
+    padding: '24px',
+    backgroundColor: '#ffffff',
+    textAlign: 'left',
+    boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
+  }}
+>
+  <h3
+  style={{
+    marginTop: 0,
+    marginBottom: '18px',
+    color: '#0f172a',
+    fontSize: '21px',
+    fontWeight: '700',
+    lineHeight: 1.4,
+  }}
+>
+  {job.title}
+</h3>
+<p style={{ margin: '10px 0', lineHeight: 1.6 }}>
+  <strong>Company:</strong> {job.company}
+</p>
+<p style={{ margin: '10px 0', lineHeight: 1.6 }}>
+  <strong>Location:</strong> {job.location}
+</p>
+<p style={{ margin: '10px 0', lineHeight: 1.6 }}>
+  <strong>Job Type:</strong> {job.job_type || 'Not specified'}
+</p>
+<p style={{ margin: '10px 0', lineHeight: 1.6 }}>
+  <strong>Annual Salary:</strong>{' '}
+  ₹{Number(job.salary).toLocaleString('en-IN')}
+</p>
+<p style={{ margin: '10px 0', lineHeight: 1.6 }}>
+  <strong>Skills:</strong> {job.skills}
+</p>
+<p style={{ margin: '10px 0 20px', lineHeight: 1.6 }}>
+  <strong>Deadline:</strong> {job.deadline}
+</p>
 
-              <p><strong>Company:</strong> {job.company}</p>
-              <p><strong>Location:</strong> {job.location}</p>
-              <p><strong>Job Type:</strong> {job.job_type || 'Not specified'}</p>
-              <p>
-                <strong>Annual Salary:</strong>{' '}
-                ₹{Number(job.salary).toLocaleString('en-IN')}
-              </p>
-              <p><strong>Skills:</strong> {job.skills}</p>
-              <p><strong>Deadline:</strong> {job.deadline}</p>
-
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <div
+  style={{
+    display: 'flex',
+    gap: '12px',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    marginTop: '8px',
+  }}
+>
                 <button
   style={primaryButtonStyle}
   onClick={() => startEditing(job)}
@@ -869,7 +908,7 @@ function RecruiterDashboard() {
             </p>
           )}
 
-        <div style={{ display: 'grid', gap: '18px', marginTop: '20px' }}>
+        <div style={{ display: 'grid', gap: '22px', marginTop: '20px' }}>
           {applications.map((application) => (
             
 <article
@@ -880,6 +919,7 @@ function RecruiterDashboard() {
     borderRadius: '16px',
     padding: '24px',
     background: '#ffffff',
+    textAlign: 'left',
     boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
   }}
 >
@@ -963,7 +1003,7 @@ function RecruiterDashboard() {
   >
     <div
       style={{
-        padding: '14px',
+        padding: '16px',
         background: '#f8fafc',
         borderRadius: '10px',
       }}
@@ -978,7 +1018,7 @@ function RecruiterDashboard() {
 
     <div
       style={{
-        padding: '14px',
+        padding: '16px',
         background: '#f8fafc',
         borderRadius: '10px',
       }}
@@ -993,7 +1033,7 @@ function RecruiterDashboard() {
 
     <div
       style={{
-        padding: '14px',
+        padding: '16px',
         background: '#f8fafc',
         borderRadius: '10px',
       }}

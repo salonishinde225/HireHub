@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import API from '../services/api'
@@ -29,18 +30,28 @@ function JobDetails() {
     fetchJob()
   }, [id])
 
+  const handleApply = () => {
+    if (token) {
+      navigate(`/jobs/${id}/apply`)
+    } else {
+      navigate('/login')
+    }
+  }
+
   if (loading) {
     return (
-      <div className="job-details-page">
-        <p>Loading job details...</p>
-      </div>
+      <main className="job-details-page">
+        <div className="job-details-card job-details-message">
+          <p>Loading job details...</p>
+        </div>
+      </main>
     )
   }
 
   if (error || !job) {
     return (
-      <div className="job-details-page">
-        <div className="job-details-card">
+      <main className="job-details-page">
+        <div className="job-details-card job-details-message">
           <h2>Job Details Unavailable</h2>
           <p>{error || 'Job not found.'}</p>
           <button
@@ -50,104 +61,120 @@ function JobDetails() {
             Back to Home
           </button>
         </div>
-      </div>
+      </main>
     )
   }
 
-  const handleApply = () => {
-    if (token) {
-      navigate(`/jobs/${id}/apply`)
-    } else {
-      navigate('/login')
-    }
-  }
+  const skills = job.skills
+    ? job.skills.split(',').map((skill) => skill.trim()).filter(Boolean)
+    : []
+
+  const formattedDeadline = job.deadline
+    ? new Date(`${job.deadline}T00:00:00`).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      })
+    : 'Not specified'
 
   return (
-    <div className="job-details-page">
-      <button
-        className="back-button"
-        onClick={() => navigate('/')}
-      >
-        ← Back to Jobs
-      </button>
+    <main className="job-details-page">
+      <div className="job-details-container">
+        <button
+          className="back-button job-back-link"
+          onClick={() => navigate('/')}
+        >
+          ← Back to Jobs
+        </button>
 
-      <div className="job-details-card">
-        <div className="job-details-header">
-          <div className="company-logo">
-            {job.company?.charAt(0)?.toUpperCase() || 'J'}
-          </div>
-
-          <div>
-            <h1>{job.title}</h1>
-            <h3>{job.company}</h3>
-            <p className="job-location">📍 {job.location}</p>
-          </div>
-        </div>
-
-        <div className="job-details-info">
-          <div className="job-info-item">
-            <span>💰</span>
-            <div>
-              <small>Salary</small>
-              <p> {job.salary
-              ? `₹${Number(job.salary).toLocaleString('en-IN')} per year`
-             : 'Not specified'}
-</p>
+        <article className="job-details-card">
+          <header className="job-details-header">
+            <div className="company-logo">
+              {job.company?.charAt(0)?.toUpperCase() || 'J'}
             </div>
-          </div>
 
-          <div className="job-info-item">
-            <span>💼</span>
-            <div>
-              <small>Job Type</small>
-              <p>{job.job_type || 'Not specified'}</p>
+            <div className="job-details-title">
+              <span className="job-details-eyebrow">JOB OPPORTUNITY</span>
+              <h1>{job.title}</h1>
+              <p className="job-details-company">{job.company || 'Company not specified'}</p>
+              <p className="job-location">
+                <span aria-hidden="true">📍</span> {job.location || 'Location not specified'}
+              </p>
             </div>
-          </div>
+          </header>
 
-          <div className="job-info-item">
-            <span>📅</span>
-            <div>
-              <small>Application Deadline</small>
-              <p>{job.deadline || 'Not specified'}</p>
+          <section className="job-details-info" aria-label="Job overview">
+            <div className="job-info-item">
+              <span className="job-info-icon" aria-hidden="true">₹</span>
+              <div>
+                <small>Annual Salary</small>
+                <p>
+                  {job.salary
+                    ? `₹${Number(job.salary).toLocaleString('en-IN')}`
+                    : 'Not specified'}
+                </p>
+              </div>
             </div>
+
+            <div className="job-info-item">
+              <span className="job-info-icon" aria-hidden="true">💼</span>
+              <div>
+                <small>Job Type</small>
+                <p>{job.job_type || 'Not specified'}</p>
+              </div>
+            </div>
+
+            <div className="job-info-item">
+              <span className="job-info-icon" aria-hidden="true">📅</span>
+              <div>
+                <small>Application Deadline</small>
+                <p>{formattedDeadline}</p>
+              </div>
+            </div>
+          </section>
+
+          <div className="job-details-content">
+            <section className="job-details-section">
+              <h2>About This Job</h2>
+              <p className="job-description">
+                {job.description || 'No description provided.'}
+              </p>
+            </section>
+
+            <section className="job-details-section">
+              <h2>Required Skills</h2>
+              {skills.length > 0 ? (
+                <div className="job-skills-list">
+                  {skills.map((skill, index) => (
+                    <span className="job-skill-tag" key={`${skill}-${index}`}>
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="job-description">Skills not specified.</p>
+              )}
+            </section>
           </div>
-        </div>
 
-        <section className="job-details-section">
-          <h2>About This Job</h2>
-          <p>{job.description || 'No description provided.'}</p>
-        </section>
-       
-        <section className="job-details-section">
-  <h2>Required Skills</h2>
-  <div className="job-skills-list">
-    {job.skills
-      ? job.skills.split(',').map((skill, index) => (
-          <span className="job-skill-tag" key={index}>
-            {skill.trim()}
-          </span>
-        ))
-      : <span>Skills not specified</span>}
-  </div>
-</section>
+          <footer className="job-details-actions">
+            <button
+              className="register-btn job-apply-button"
+              onClick={handleApply}
+            >
+              {token ? 'Apply for This Job' : 'Login to Apply'}
+            </button>
 
-        <div className="job-details-actions">
-          <button
-            className="register-btn"
-            onClick={handleApply}
-          >
-            {token ? 'Apply for This Job' : 'Login to Apply'}
-          </button>
-
-          <button
-            className="back-button"
-            onClick={() => navigate('/')}
-          >
-            Browse More Jobs
-          </button>
-        </div>
+            <button
+              className="back-button job-browse-button"
+              onClick={() => navigate('/')}
+            >
+              Browse More Jobs
+            </button>
+          </footer>
+        </article>
       </div>
-    </div>
+    </main>
   )
 }
 
